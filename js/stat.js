@@ -3,15 +3,17 @@
 'use strict';
 
 window.renderStatistics = function (ctx, names, times) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  ctx.fillRect(110, 20, 420, 270);
+
   ctx.fillStyle = 'rgba(256, 256, 256, 1.0)'; // white;
   ctx.strokeRect(100, 10, 420, 270);
   ctx.fillRect(100, 10, 420, 270);
 
-
   ctx.fillStyle = '#000'; // black;
-  ctx.font = '14px PT Mono';
+  ctx.font = '16px PT Mono';
 
-  ctx.fillText('Ура вы победили!', 120, 40);
+  ctx.fillText('Ура вы победили! Список результатов:', 120, 40);
 
   var max = -1;
   var maxIndex = -1;
@@ -29,14 +31,18 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillText('Худшее время: ' + max.toFixed(2) + 'мс у игрока ' + names[maxIndex], 120, 60);
 
-  var barHeigth = 20; // px;
-  var indent = 40;    // px;
-  var initialX = 120; // px;
-  var initialY = 80;  // px;
+  var barHeigth = 40; // px;
+  var indent = 100;    // px;
+  var initialX = 140; // px;
+  var initialY = 250;  // px;
   var lineHeight = 15;// px;
 
+
+
   for(var i = 0; i < times.length; i++) {
-    ctx.fillRect(initialX, initialY + indent * i, times[i] * step, barHeigth);
-    ctx.fillText(names[i], initialX + histogramWidth, initialY + lineHeight + indent * i);
+    ctx.fillStyle = 'rgba(2, 14, 134, ' + Math.random() + ')';
+    ctx.fillRect(initialX + indent * i, initialY, barHeigth, -(times[i] * step));
+//    ctx.fillText(names[i], initialX + histogramWidth, initialY + lineHeight + indent * i);
+      ctx.fillText(names[i], initialX + indent * i, initialY + lineHeight);
   }
 };
