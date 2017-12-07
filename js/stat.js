@@ -13,12 +13,13 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillStyle = '#000'; // black;
   ctx.font = '16px PT Mono';
 
-  ctx.fillText('Ура вы победили! Список результатов:', 120, 40);
+  ctx.fillText('Ура вы победили!', 120, 40);
+  ctx.fillText('Список результатов:', 120, 60);
 
   var max = -1;
   var maxIndex = -1;
 
-  for (var i = 0 ; i < times.length; i++) {
+  for (var i = 0; i < times.length; i++) {
     var time = times[i];
     if (time > max) {
       max = time;
@@ -26,23 +27,31 @@ window.renderStatistics = function (ctx, names, times) {
     }
   }
 
-  var histogramWidth = 150;              // px;
-  var step = histogramWidth / (max - 0); // px;
+  var histogramHeight = 150;              // px;
+  var step = histogramHeight / (max - 0); // px;
 
-  ctx.fillText('Худшее время: ' + max.toFixed(2) + 'мс у игрока ' + names[maxIndex], 120, 60);
+  //ctx.fillText('Худшее время: ' + Math.round(max) + 'мс у игрока ' + names[maxIndex], 120, 80);
 
-  var barHeigth = 40; // px;
-  var indent = 100;    // px;
+  var barWidth = 40; // px;
+  var indent = 90;    // px;
   var initialX = 140; // px;
   var initialY = 250;  // px;
-  var lineHeight = 15;// px;
+  var lineWidth = 15;// px;
+  var lineShift =  10;
 
+  var setColor = function(item) {
+    if ((names[item]) == 'Вы') {
+      return 'rgba(255, 0, 0, 1)';
+    } else {
+      return 'rgba(2, 14, 134, ' + Math.random() + ')';
+    }
+  }
 
-
-  for(var i = 0; i < times.length; i++) {
-    ctx.fillStyle = 'rgba(2, 14, 134, ' + Math.random() + ')';
-    ctx.fillRect(initialX + indent * i, initialY, barHeigth, -(times[i] * step));
-//    ctx.fillText(names[i], initialX + histogramWidth, initialY + lineHeight + indent * i);
-      ctx.fillText(names[i], initialX + indent * i, initialY + lineHeight);
+  for(var j = 0; j < times.length; j++) {
+    ctx.fillStyle = setColor(j);
+    ctx.fillRect(initialX + indent * j, initialY, barWidth, -(times[j] * step));
+    ctx.fillStyle = 'rgba(0,0,0, .8)';
+    ctx.fillText(Math.round(times[j]), initialX + indent * j, initialY - (times[j] * step + lineShift));
+    ctx.fillText(names[j], initialX + indent * j, initialY + lineWidth);
   }
 };
